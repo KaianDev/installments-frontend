@@ -27,21 +27,24 @@ export const authContext = createContext({} as IAuthContext)
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<IUser | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const setTimeoutIsLoading = useCallback(() => {
     setTimeout(() => {
       setIsLoading(false)
-    }, 2000)
+    }, 1500)
   }, [])
 
   useEffect(() => {
-    if (user) return
-    setIsLoading(true)
-    const userFromStorage = localStorage.getItem(AUTH.USER)
-    if (!userFromStorage) return
-    setUser(JSON.parse(userFromStorage))
-    setTimeoutIsLoading()
+    if (user) {
+      setIsLoading(true)
+      const userFromStorage = localStorage.getItem(AUTH.USER)
+      if (!userFromStorage) return
+      setUser(JSON.parse(userFromStorage))
+      setTimeoutIsLoading()
+    } else {
+      setTimeoutIsLoading()
+    }
   }, [isLoading, setTimeoutIsLoading, user])
 
   const login = async (credentials: LoginWithCredentialsSchemaProps) => {
