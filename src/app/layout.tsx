@@ -3,6 +3,7 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Nunito } from "next/font/google"
 
+import { ResponsiveIndicator } from "@/components/shared/responsive-indicator"
 import { Toaster } from "@/components/ui/sonner"
 import { Providers } from "@/providers"
 
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="pt-BR" className="dark">
       <body className={`${nunitoSans.variable} antialiased`}>
         <Providers>{children}</Providers>
+        <ResponsiveIndicator />
         <Toaster />
       </body>
     </html>
