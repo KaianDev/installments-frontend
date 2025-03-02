@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { FRONTEND_ROUTES } from "@/constants"
 
 export const LoginForm = () => {
   const form = useForm()
@@ -51,7 +52,10 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <Link href="#" className="link ml-auto block w-fit text-sm underline">
+          <Link
+            href={FRONTEND_ROUTES.FORGOT_PASSWORD.href}
+            className="link ml-auto block w-fit text-sm underline"
+          >
             Esqueceu a senha?
           </Link>
 

@@ -2,18 +2,21 @@ import Image from "next/image"
 import Link from "next/link"
 
 import { LoginForm, LoginWithGoogle } from "@/components/auth"
+import { FRONTEND_ROUTES } from "@/constants"
 
 const Home = () => {
   return (
     <div className="grid h-full min-h-screen grid-cols-2 gap-8 p-8">
       <main className="flex flex-col items-center justify-evenly gap-12">
         <header className="flex">
-          <Image
-            src="/assets/images/logo.png"
-            alt=""
-            width={200}
-            height={200}
-          />
+          <Link href={FRONTEND_ROUTES.HOME.href}>
+            <Image
+              src="/assets/images/logo.png"
+              alt=""
+              width={200}
+              height={200}
+            />
+          </Link>
         </header>
         <div className="flex max-w-md flex-col gap-4">
           <div className="flex items-baseline gap-2">
@@ -33,7 +36,7 @@ const Home = () => {
           <LoginWithGoogle />
           <p className="text-center">
             Ainda não possui uma conta?{" "}
-            <Link href="#" className="link">
+            <Link href={FRONTEND_ROUTES.REGISTER.href} className="link">
               Registre-se já
             </Link>
             .
@@ -49,6 +52,7 @@ const Home = () => {
           alt=""
           fill
           className="object-cover"
+          quality={80}
         />
       </section>
     </div>
