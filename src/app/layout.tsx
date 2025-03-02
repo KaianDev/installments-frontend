@@ -3,6 +3,9 @@ import "./globals.css"
 import type { Metadata } from "next"
 import { Nunito } from "next/font/google"
 
+import { Toaster } from "@/components/ui/sonner"
+import { Providers } from "@/providers"
+
 const nunitoSans = Nunito({
   variable: "--font-nunito-sans",
   subsets: ["latin"],
@@ -20,7 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="dark">
-      <body className={`${nunitoSans.variable} antialiased`}>{children}</body>
+      <body className={`${nunitoSans.variable} antialiased`}>
+        <Providers>{children}</Providers>
+        <Toaster />
+      </body>
     </html>
   )
 }

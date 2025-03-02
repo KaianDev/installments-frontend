@@ -1,7 +1,9 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -14,14 +16,38 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { FRONTEND_ROUTES } from "@/constants"
+import { useAuthContext } from "@/contexts/auth"
+import {
+  loginWithCredentialsSchema,
+  type LoginWithCredentialsSchemaProps,
+} from "@/schemas/auth"
 
 export const LoginForm = () => {
-  const form = useForm()
+  const { login } = useAuthContext()
+  const form = useForm<LoginWithCredentialsSchemaProps>({
+    resolver: zodResolver(loginWithCredentialsSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  })
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const response = await login(data)
+    if (response) {
+      toast.success("Login efetuado com sucesso")
+      console.log(response)
+    } else {
+      toast.error("Erro ao fazer login")
+    }
+  })
+
+  const formIsSubmitting = form.formState.isSubmitting
 
   return (
     <div>
       <Form {...form}>
-        <form action="" className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -59,8 +85,14 @@ export const LoginForm = () => {
             Esqueceu a senha?
           </Link>
 
-          <Button type="submit" size="lg" className="w-full cursor-pointer">
-            Entrar
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full cursor-pointer"
+            disabled={formIsSubmitting}
+          >
+            {formIsSubmitting ? "Entrando..." : "Entrar"}
+            {/* Entrar */}
           </Button>
         </form>
       </Form>
