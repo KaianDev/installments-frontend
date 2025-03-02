@@ -6,7 +6,7 @@ import { FRONTEND_ROUTES } from "@/constants"
 
 const Home = () => {
   return (
-    <div className="grid h-full min-h-screen gap-8 p-8 lg:grid-cols-2">
+    <div className="grid h-full min-h-dvh gap-8 p-8 lg:grid-cols-2">
       <main className="flex flex-col items-center justify-evenly gap-12">
         <header className="flex">
           <Link href={FRONTEND_ROUTES.HOME.href}>

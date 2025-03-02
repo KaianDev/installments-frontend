@@ -10,7 +10,7 @@ import {
 
 import { loginWithCredentials } from "@/actions/auth"
 import { logoutAction } from "@/actions/auth/logout"
-import { AUTH, FRONTEND_ROUTES } from "@/constants"
+import { AUTH } from "@/constants"
 import type { LoginWithCredentialsSchemaProps } from "@/schemas/auth"
 
 interface IUser {
