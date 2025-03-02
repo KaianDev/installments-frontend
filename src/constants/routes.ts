@@ -8,4 +8,7 @@ export const FRONTEND_ROUTES = {
   FORGOT_PASSWORD: {
     href: "#",
   },
+  DASHBOARD: {
+    href: "/dashboard",
+  },
 } as const

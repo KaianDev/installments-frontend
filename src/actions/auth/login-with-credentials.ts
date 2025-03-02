@@ -34,8 +34,12 @@ export const loginWithCredentials = async (
 
     return {
       user: MOCK.USER,
+      success: true,
     }
   } catch (error) {
     console.error(error)
+    return {
+      success: false,
+    }
   }
 }

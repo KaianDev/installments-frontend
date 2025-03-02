@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -23,6 +24,7 @@ import {
 } from "@/schemas/auth"
 
 export const LoginForm = () => {
+  const router = useRouter()
   const { login } = useAuthContext()
   const form = useForm<LoginWithCredentialsSchemaProps>({
     resolver: zodResolver(loginWithCredentialsSchema),
@@ -34,9 +36,9 @@ export const LoginForm = () => {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const response = await login(data)
-    if (response) {
+    if (response.success) {
       toast.success("Login efetuado com sucesso")
-      console.log(response)
+      router.replace(FRONTEND_ROUTES.DASHBOARD.href)
     } else {
       toast.error("Erro ao fazer login")
     }
@@ -55,7 +57,11 @@ export const LoginForm = () => {
               <FormItem>
                 <FormLabel>E-mail</FormLabel>
                 <FormControl>
-                  <Input placeholder="example@email.com" {...field} />
+                  <Input
+                    placeholder="example@email.com"
+                    {...field}
+                    disabled={formIsSubmitting}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,6 +78,7 @@ export const LoginForm = () => {
                     placeholder="Pelo menos 8 caracteres"
                     type="password"
                     {...field}
+                    disabled={formIsSubmitting}
                   />
                 </FormControl>
                 <FormMessage />
@@ -92,7 +99,6 @@ export const LoginForm = () => {
             disabled={formIsSubmitting}
           >
             {formIsSubmitting ? "Entrando..." : "Entrar"}
-            {/* Entrar */}
           </Button>
         </form>
       </Form>

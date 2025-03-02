@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation"
 import type { PropsWithChildren } from "react"
 import {
   createContext,
@@ -8,7 +9,8 @@ import {
 } from "react"
 
 import { loginWithCredentials } from "@/actions/auth"
-import { AUTH } from "@/constants"
+import { logoutAction } from "@/actions/auth/logout"
+import { AUTH, FRONTEND_ROUTES } from "@/constants"
 import type { LoginWithCredentialsSchemaProps } from "@/schemas/auth"
 
 interface IUser {
@@ -21,11 +23,13 @@ interface IAuthContext {
   login: (
     credentials: LoginWithCredentialsSchemaProps,
   ) => Promise<{ success: boolean }>
+  logout: () => Promise<void>
 }
 
 export const authContext = createContext({} as IAuthContext)
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
+  const router = useRouter()
   const [user, setUser] = useState<IUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -36,25 +40,30 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   }, [])
 
   useEffect(() => {
-    if (user) {
-      setIsLoading(true)
+    if (isLoading) {
       const userFromStorage = localStorage.getItem(AUTH.USER)
-      if (!userFromStorage) return
-      setUser(JSON.parse(userFromStorage))
-      setTimeoutIsLoading()
-    } else {
+      if (userFromStorage && !user) {
+        setUser(JSON.parse(userFromStorage))
+      }
       setTimeoutIsLoading()
     }
-  }, [isLoading, setTimeoutIsLoading, user])
+  }, [isLoading, setTimeoutIsLoading, user, router])
 
   const login = async (credentials: LoginWithCredentialsSchemaProps) => {
     const response = await loginWithCredentials(credentials)
-    if (response) {
+    if (response && response.user) {
       setUser(response.user)
       localStorage.setItem(AUTH.USER, JSON.stringify(response.user))
       return { success: true }
     }
+    console.log("Fail", response)
     return { success: false }
+  }
+
+  const logout = async () => {
+    setUser(null)
+    localStorage.removeItem(AUTH.USER)
+    await logoutAction()
   }
 
   if (isLoading)
@@ -65,7 +74,7 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
     )
 
   return (
-    <authContext.Provider value={{ user, login }}>
+    <authContext.Provider value={{ user, login, logout }}>
       {children}
     </authContext.Provider>
   )
