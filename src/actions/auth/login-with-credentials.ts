@@ -11,28 +11,6 @@ export const loginWithCredentials = async (
   credentials: LoginWithCredentialsSchemaProps,
 ) => {
   try {
-    // const response = await fetch(ENDPOINTS.AUTH.LOGIN_WITH_CREDENTIALS, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(credentials),
-    // })
-
-    // if (!response.ok) {
-    //   throw new Error("Erro ao fazer login")
-    // }
-    // const cookieStore = await cookies()
-
-    // const data = (await response.json()) as AuthUser
-    // cookieStore.set(AUTH.TOKEN, data.accessToken)
-
-    // return {
-    //   user: {
-    //     ...data,
-    //   },
-    //   success: true,
-    // }
     const response = await apiClient<LoginWithCredentialsSchemaProps, AuthUser>(
       {
         endpoint: ENDPOINTS.AUTH.LOGIN_WITH_CREDENTIALS,
@@ -40,8 +18,6 @@ export const loginWithCredentials = async (
         data: credentials,
       },
     )
-
-    console.log(response)
 
     if (!response) {
       throw new Error("Erro ao fazer login")
