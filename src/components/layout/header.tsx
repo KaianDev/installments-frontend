@@ -42,10 +42,11 @@ export const DashboardHeader = () => {
             </ul>
           </nav>
         </div>
-        <div>
+        <div className="flex items-center gap-4">
+          <p className="font-bold text-white capitalize">{user?.name}</p>
           <Avatar>
             {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-            <AvatarFallback>
+            <AvatarFallback className="bg-primary text-white">
               {user?.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
