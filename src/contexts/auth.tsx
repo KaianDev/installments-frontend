@@ -12,14 +12,10 @@ import { loginWithCredentials } from "@/actions/auth"
 import { logoutAction } from "@/actions/auth/logout"
 import { AUTH } from "@/constants"
 import type { LoginWithCredentialsSchemaProps } from "@/schemas/auth"
-
-interface IUser {
-  name: string
-  email: string
-}
+import type { AuthUser } from "@/types/auth-user"
 
 interface IAuthContext {
-  user: IUser | null
+  user: AuthUser | null
   login: (
     credentials: LoginWithCredentialsSchemaProps,
   ) => Promise<{ success: boolean }>
@@ -30,13 +26,13 @@ export const authContext = createContext({} as IAuthContext)
 
 export const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter()
-  const [user, setUser] = useState<IUser | null>(null)
+  const [user, setUser] = useState<AuthUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const setTimeoutIsLoading = useCallback(() => {
     setTimeout(() => {
       setIsLoading(false)
-    }, 1500)
+    }, 1000)
   }, [])
 
   useEffect(() => {
@@ -56,7 +52,6 @@ export const AuthContextProvider = ({ children }: PropsWithChildren) => {
       localStorage.setItem(AUTH.USER, JSON.stringify(response.user))
       return { success: true }
     }
-    console.log("Fail", response)
     return { success: false }
   }
 

@@ -3,8 +3,8 @@
 import { cookies } from "next/headers"
 
 import { AUTH, ENDPOINTS } from "@/constants"
-import { MOCK } from "@/constants/mock"
 import type { LoginWithCredentialsSchemaProps } from "@/schemas/auth"
+import type { AuthUser } from "@/types/auth-user"
 
 export const loginWithCredentials = async (
   credentials: LoginWithCredentialsSchemaProps,
@@ -22,18 +22,14 @@ export const loginWithCredentials = async (
       throw new Error("Erro ao fazer login")
     }
     const cookieStore = await cookies()
-    console.log(cookieStore.get(AUTH.TOKEN))
 
-    const data = (await response.json()) as {
-      accessToken: string
-    }
-
-    console.log(JSON.stringify(data))
-
+    const data = (await response.json()) as AuthUser
     cookieStore.set(AUTH.TOKEN, data.accessToken)
 
     return {
-      user: MOCK.USER,
+      user: {
+        ...data,
+      },
       success: true,
     }
   } catch (error) {
