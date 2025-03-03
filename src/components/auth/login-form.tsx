@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { FRONTEND_ROUTES } from "@/constants"
 import { useAuthContext } from "@/contexts/auth"
 import {
@@ -74,7 +75,7 @@ export const LoginForm = () => {
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input
+                  <PasswordInput
                     placeholder="Pelo menos 8 caracteres"
                     type="password"
                     {...field}
