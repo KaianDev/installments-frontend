@@ -77,7 +77,6 @@ export const LoginForm = () => {
                 <FormControl>
                   <PasswordInput
                     placeholder="Pelo menos 8 caracteres"
-                    type="password"
                     {...field}
                     disabled={formIsSubmitting}
                   />

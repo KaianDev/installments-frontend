@@ -17,7 +17,7 @@ export const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
     }
 
     return (
-      <div className="relative space-y-2">
+      <div className="relative">
         <Input
           type={showPassword ? "text" : "password"}
           {...props}
