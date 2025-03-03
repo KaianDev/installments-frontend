@@ -11,4 +11,4 @@ export const FRONTEND_ROUTES = {
   DASHBOARD: {
     href: "/dashboard",
   },
-} as const
+}
