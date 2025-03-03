@@ -19,22 +19,24 @@ export const loginWithCredentials = async (
       },
     )
 
-    if (!response) {
+    if (!response.success) {
       throw new Error("Erro ao fazer login")
     }
+
+    const { data } = response
 
     const cookieStore = await cookies()
     cookieStore.set({
       name: AUTH.TOKEN,
-      value: response.accessToken,
+      value: data.accessToken,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      expires: response.expiresAt,
+      expires: data.expiresAt,
     })
     return {
       success: true,
       user: {
-        ...response,
+        ...data,
       },
     }
   } catch (error) {

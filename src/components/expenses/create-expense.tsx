@@ -5,9 +5,12 @@ import { Plus } from "@phosphor-icons/react"
 import { Calendar as CalendarIcon } from "@phosphor-icons/react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { NumericFormat } from "react-number-format"
+import { toast } from "sonner"
 
+import { createExpense } from "@/actions/expenses"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import {
@@ -35,10 +38,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
-import type { CreateExpenseSchemaProps } from "@/schemas/expenses/create-expense"
-import { createExpenseSchema } from "@/schemas/expenses/create-expense"
+import type { CreateExpenseSchemaProps } from "@/schemas/expenses"
+import { createExpenseSchema } from "@/schemas/expenses"
 
 export const CreateExpense = () => {
+  const [open, setOpen] = useState(false)
   const form = useForm<CreateExpenseSchemaProps>({
     resolver: zodResolver(createExpenseSchema),
     defaultValues: {
@@ -51,13 +55,19 @@ export const CreateExpense = () => {
   })
 
   const handleSubmit = form.handleSubmit(async (data) => {
-    console.log(data)
+    const response = await createExpense(data)
+    if (response.success) {
+      toast.success("Despesa criada com sucesso")
+      setOpen(false)
+    } else {
+      toast.error("Erro ao criar despensa")
+    }
   })
 
   const formIsSubmitting = form.formState.isSubmitting
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button>
           <Plus />

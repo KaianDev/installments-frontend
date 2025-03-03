@@ -18,6 +18,12 @@ type ApiClientProps<B> = RequestInit & {
   params?: Record<string, string>
   data?: B
   withToken?: boolean
+  withOutResponse?: boolean
+}
+
+type ApiClientResponse<T> = {
+  data: T
+  success: boolean
 }
 
 export const apiClient = async <B, T>({
@@ -29,8 +35,9 @@ export const apiClient = async <B, T>({
   },
   data,
   withToken = false,
+  withOutResponse = false,
   ...props
-}: ApiClientProps<B>) => {
+}: ApiClientProps<B>): Promise<ApiClientResponse<T>> => {
   const url = buildURL(endpoint, params)
   const options: RequestInit = {
     headers,
@@ -42,7 +49,7 @@ export const apiClient = async <B, T>({
     const token = (await cookies()).get(AUTH.TOKEN)
     options.headers = {
       ...options.headers,
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token?.value}`,
     }
   }
 
@@ -52,8 +59,8 @@ export const apiClient = async <B, T>({
 
   try {
     const response = await fetch(url.toString(), options)
-    const dataJson = await response.json()
-
+    const dataJson = withOutResponse ? undefined : await response.json()
+    console.log(response.status, response.headers)
     if (!response.ok) {
       throw new FetchError("Fetch failed", response)
     }
@@ -62,12 +69,15 @@ export const apiClient = async <B, T>({
       throw new FetchError("Unauthorized", response)
     }
 
-    return dataJson as T
+    return {
+      data: dataJson as T,
+      success: response.ok,
+    }
   } catch (error) {
     if (error instanceof FetchError) {
       console.error(error.response)
     }
-    console.error(error)
+    throw new Error("Erro ao fazer a requisição")
   }
 }
 

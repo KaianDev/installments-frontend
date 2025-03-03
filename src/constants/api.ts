@@ -3,4 +3,7 @@ export const ENDPOINTS = {
   AUTH: {
     LOGIN_WITH_CREDENTIALS: `${BASE_URL}/auth/login`,
   },
+  EXPENSE: {
+    CREATE_EXPENSE: `${BASE_URL}/expenses`,
+  },
 }
