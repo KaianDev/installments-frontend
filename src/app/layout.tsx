@@ -8,8 +8,8 @@ import { Toaster } from "@/components/ui/sonner"
 import { Providers } from "@/providers"
 
 const nunitoSans = Nunito({
-  variable: "--font-nunito-sans",
   subsets: ["latin"],
+  weight: ["1000", "200", "300", "400", "600", "700", "800", "900"],
 })
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className="dark">
-      <body className={`${nunitoSans.variable} antialiased`}>
+      <body className={`${nunitoSans.className} antialiased`}>
         <Providers>{children}</Providers>
         <ResponsiveIndicator />
         <Toaster />

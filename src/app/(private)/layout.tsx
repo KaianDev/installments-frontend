@@ -6,7 +6,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   return (
     <div>
       <DashboardHeader />
-      {children}
+      <main>{children}</main>
     </div>
   )
 }

@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { PasswordInput } from "@/components/ui/password-input"
 import { FRONTEND_ROUTES } from "@/constants"
-import { useAuthContext } from "@/contexts/auth"
+import { useAuth } from "@/contexts/auth"
 import {
   loginWithCredentialsSchema,
   type LoginWithCredentialsSchemaProps,
@@ -26,7 +26,7 @@ import {
 
 export const LoginForm = () => {
   const router = useRouter()
-  const { login } = useAuthContext()
+  const { login } = useAuth()
   const form = useForm<LoginWithCredentialsSchemaProps>({
     resolver: zodResolver(loginWithCredentialsSchema),
     defaultValues: {
