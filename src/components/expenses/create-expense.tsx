@@ -1,5 +1,6 @@
 "use client"
 
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "@phosphor-icons/react"
 import { Calendar as CalendarIcon } from "@phosphor-icons/react"
 import { format } from "date-fns"
@@ -34,9 +35,26 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import type { CreateExpenseSchemaProps } from "@/schemas/expenses/create-expense"
+import { createExpenseSchema } from "@/schemas/expenses/create-expense"
 
 export const CreateExpense = () => {
-  const form = useForm()
+  const form = useForm<CreateExpenseSchemaProps>({
+    resolver: zodResolver(createExpenseSchema),
+    defaultValues: {
+      initialDate: new Date(),
+      categoryId: "",
+      quantityInstallments: 1,
+      title: "",
+      totalValue: "",
+    },
+  })
+
+  const handleSubmit = form.handleSubmit(async (data) => {
+    console.log(data)
+  })
+
+  const formIsSubmitting = form.formState.isSubmitting
 
   return (
     <Sheet>
@@ -55,7 +73,10 @@ export const CreateExpense = () => {
           </SheetDescription>
         </SheetHeader>
         <Form {...form}>
-          <form action="" className="flex h-full flex-col justify-between">
+          <form
+            onSubmit={handleSubmit}
+            className="flex h-full flex-col justify-between"
+          >
             <div className="space-y-4 px-4">
               <FormField
                 control={form.control}
@@ -64,7 +85,11 @@ export const CreateExpense = () => {
                   <FormItem>
                     <FormLabel>Título</FormLabel>
                     <FormControl>
-                      <Input placeholder="Iphone 15" {...field} />
+                      <Input
+                        placeholder="Iphone 15"
+                        {...field}
+                        disabled={formIsSubmitting}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -87,6 +112,7 @@ export const CreateExpense = () => {
                         customInput={Input}
                         placeholder="Valor total"
                         onValueChange={(values) => field.onChange(values.value)}
+                        disabled={formIsSubmitting}
                         {...field}
                         onChange={() => {}}
                       />
@@ -105,7 +131,8 @@ export const CreateExpense = () => {
                       <Input
                         type="number"
                         min={1}
-                        placeholder="Iphone 15"
+                        placeholder="Número de parcelas"
+                        disabled={formIsSubmitting}
                         {...field}
                       />
                     </FormControl>
@@ -129,6 +156,7 @@ export const CreateExpense = () => {
                               "pl-3 text-left font-normal",
                               !field.value && "text-muted-foreground",
                             )}
+                            disabled={formIsSubmitting}
                           >
                             {field.value ? (
                               format(field.value, "PPP", { locale: ptBR })
@@ -159,7 +187,9 @@ export const CreateExpense = () => {
               />
             </div>
             <SheetFooter className="mt-auto">
-              <Button type="submit">Adicionar</Button>
+              <Button type="submit" disabled={formIsSubmitting}>
+                Adicionar
+              </Button>
             </SheetFooter>
           </form>
         </Form>
