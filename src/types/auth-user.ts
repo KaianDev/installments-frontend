@@ -3,4 +3,5 @@ export interface AuthUser {
   email: string
   roles: string[]
   accessToken: string
+  expiresAt: number
 }
