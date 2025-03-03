@@ -5,8 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --spacing-app: 120rem;
 }
 
 :root {
@@ -134,5 +133,9 @@
 
   .link {
     @apply hover:text-primary underline transition-colors;
+  }
+
+  .title {
+    @apply text-3xl font-bold text-white;
   }
 }
