@@ -1,6 +1,7 @@
 "use server"
 
 import { format } from "date-fns"
+import { revalidateTag } from "next/cache"
 
 import { ENDPOINTS } from "@/constants"
 import { apiClient } from "@/lib/api"
@@ -28,7 +29,7 @@ export const createExpense = async (expense: CreateExpenseSchemaProps) => {
       withOutResponse: true,
       withToken: true,
     })
-
+    revalidateTag("installments")
     return { success: true }
   } catch (error) {
     console.log(error)

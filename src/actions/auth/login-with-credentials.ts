@@ -11,7 +11,7 @@ export const loginWithCredentials = async (
   credentials: LoginWithCredentialsSchemaProps,
 ) => {
   try {
-    const response = await apiClient<LoginWithCredentialsSchemaProps, AuthUser>(
+    const response = await apiClient<AuthUser, LoginWithCredentialsSchemaProps>(
       {
         endpoint: ENDPOINTS.AUTH.LOGIN_WITH_CREDENTIALS,
         method: "POST",

@@ -1,3 +1,5 @@
+import "server-only"
+
 import { ENDPOINTS } from "@/constants"
 import { apiClient } from "@/lib/api"
 import type { Installment, InstallmentsSearchParams } from "@/types/expenses"
@@ -20,19 +22,32 @@ export const getInstallments = async ({
   try {
     const currentDate = new Date()
     const year = params.year || currentDate.getFullYear()
-    const month = params.month || currentDate.getMonth() + 1
+    const getMonth = () => {
+      if (params.month) {
+        return params.month
+      }
 
-    const response = await apiClient({
+      if (currentDate.getDate() < 10) {
+        return `0${currentDate.getMonth() + 1}`
+      }
+
+      return currentDate.getMonth() + 1
+    }
+    const month = getMonth()
+
+    const response = await apiClient<GetInstallmentsResponse>({
       endpoint: ENDPOINTS.EXPENSE.GET_INSTALLMENTS,
       params: {
+        ...params,
         "page-size": pageSize.toString(),
         page: (page - 1).toString(),
         month: month.toString(),
         year: year.toString(),
-        search: params.search || "",
-        category: params.category || "",
       },
       withToken: true,
+      next: {
+        tags: ["installments"],
+      },
     })
 
     if (!response.success) {

@@ -26,7 +26,7 @@ type ApiClientResponse<T> = {
   success: boolean
 }
 
-export const apiClient = async <B, T>({
+export const apiClient = async <T, B = undefined>({
   endpoint,
   params,
   method = "GET",
@@ -44,6 +44,8 @@ export const apiClient = async <B, T>({
     method,
     ...props,
   }
+
+  console.log(url.toString())
 
   if (withToken) {
     const token = (await cookies()).get(AUTH.TOKEN)
