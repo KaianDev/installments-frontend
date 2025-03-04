@@ -4,12 +4,14 @@ import { format } from "date-fns"
 
 import { ENDPOINTS } from "@/constants"
 import { apiClient } from "@/lib/api"
+import { normalizeValue } from "@/lib/normalize-value"
 import type { CreateExpenseSchemaProps } from "@/schemas/expenses"
 
 export const createExpense = async (expense: CreateExpenseSchemaProps) => {
   const formattedExpense = {
     ...expense,
     initialDate: format(expense.initialDate, "yyyy-MM-dd"),
+    totalValue: normalizeValue(expense.totalValue),
   }
 
   if (expense.categoryId === "") {

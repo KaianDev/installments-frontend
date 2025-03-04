@@ -2,13 +2,13 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "@phosphor-icons/react"
-import { Calendar as CalendarIcon } from "@phosphor-icons/react"
+import { Calendar as CalendarIcon, SpinnerGap } from "@phosphor-icons/react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { NumericFormat } from "react-number-format"
 import { toast } from "sonner"
+import { withMask } from "use-mask-input"
 
 import { createExpense } from "@/actions/expenses"
 import { Button } from "@/components/ui/button"
@@ -37,6 +37,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { CURRENCY_MASK } from "@/constants"
 import { cn } from "@/lib/utils"
 import type { CreateExpenseSchemaProps } from "@/schemas/expenses"
 import { createExpenseSchema } from "@/schemas/expenses"
@@ -59,6 +60,13 @@ export const CreateExpense = () => {
     if (response.success) {
       toast.success("Despesa criada com sucesso")
       setOpen(false)
+      form.reset({
+        initialDate: new Date(),
+        categoryId: "",
+        quantityInstallments: 1,
+        title: "",
+        totalValue: "",
+      })
     } else {
       toast.error("Erro ao criar despensa")
     }
@@ -112,19 +120,15 @@ export const CreateExpense = () => {
                   <FormItem>
                     <FormLabel>Valor total</FormLabel>
                     <FormControl>
-                      <NumericFormat
-                        thousandSeparator="."
-                        decimalSeparator=","
-                        fixedDecimalScale
-                        decimalScale={2}
-                        prefix="R$ "
-                        maxLength={17}
-                        customInput={Input}
+                      <Input
+                        min={0}
                         placeholder="Valor total"
-                        onValueChange={(values) => field.onChange(values.value)}
                         disabled={formIsSubmitting}
                         {...field}
-                        onChange={() => {}}
+                        ref={withMask(CURRENCY_MASK, {
+                          showMaskOnFocus: false,
+                          showMaskOnHover: false,
+                        })}
                       />
                     </FormControl>
                     <FormMessage />
@@ -161,6 +165,7 @@ export const CreateExpense = () => {
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
+                            type="button"
                             variant={"outline"}
                             className={cn(
                               "pl-3 text-left font-normal",
@@ -198,7 +203,8 @@ export const CreateExpense = () => {
             </div>
             <SheetFooter className="mt-auto">
               <Button type="submit" disabled={formIsSubmitting}>
-                Adicionar
+                {formIsSubmitting && <SpinnerGap className="animate-spin" />}
+                {formIsSubmitting ? "Salvando..." : "Salvar"}
               </Button>
             </SheetFooter>
           </form>

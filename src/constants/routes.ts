@@ -20,11 +20,11 @@ export const FRONTEND_ROUTES = {
     label: "Despesas",
   },
   REVENUE: {
-    href: "#",
+    href: "#revenue",
     label: "Receitas e investimentos",
   },
   PLANS: {
-    href: "#",
+    href: "#plans",
     label: "Planos",
   },
 }
