@@ -5,5 +5,6 @@ export const ENDPOINTS = {
   },
   EXPENSE: {
     CREATE_EXPENSE: `${BASE_URL}/expenses`,
+    GET_INSTALLMENTS: `${BASE_URL}/installments`,
   },
 }
