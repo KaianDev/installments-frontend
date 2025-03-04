@@ -16,6 +16,7 @@ export const InstallmentColumns: ColumnDef<Installment>[] = [
       const title = row.original.expense.title
       return title
     },
+    enableHiding: false,
   },
   {
     accessorKey: "type",
@@ -65,11 +66,7 @@ export const InstallmentColumns: ColumnDef<Installment>[] = [
   },
   {
     accessorKey: "isPaid",
-    header: () => {
-      return (
-        <div className="flex w-full items-center justify-center">Pago?</div>
-      )
-    },
+    header: "Pago?",
     cell: ({ row }) => {
       const isPaid = row.original.isPaid
       return isPaid ? (
@@ -91,7 +88,7 @@ export const InstallmentColumns: ColumnDef<Installment>[] = [
             variant="ghost"
             size="icon"
           >
-            <ArrowSquareOut size={24} weight="bold" />
+            <ArrowSquareOut weight="bold" className="!size-5" />
           </Button>
         </div>
       )

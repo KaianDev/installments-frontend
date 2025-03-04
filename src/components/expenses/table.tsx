@@ -1,10 +1,10 @@
 "use client"
 
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table"
-
+import { DataTable } from "@/components/ui/data-table"
+import { ViewTableColumns } from "@/components/ui/view-table-columns"
+import { useInstallmentTable } from "@/hooks/expenses/use-installment-table"
 import type { Installment } from "@/types/expenses"
 
-import { DataTable } from "../ui/data-table"
 import { InstallmentColumns } from "./columns"
 
 interface ExpenseTableProps {
@@ -12,15 +12,13 @@ interface ExpenseTableProps {
 }
 
 export const ExpenseTable = ({ installments }: ExpenseTableProps) => {
-  const table = useReactTable({
-    data: installments,
-    columns: InstallmentColumns,
-    getCoreRowModel: getCoreRowModel(),
-    columnResizeMode: "onChange",
-  })
+  const { table } = useInstallmentTable(installments)
 
   return (
-    <div>
+    <div className="flex flex-col space-y-6">
+      <div>
+        <ViewTableColumns table={table} />
+      </div>
       <DataTable table={table} columns={InstallmentColumns} />
     </div>
   )

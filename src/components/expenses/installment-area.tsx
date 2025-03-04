@@ -5,9 +5,5 @@ import { ExpenseTable } from "./table"
 export const InstallmentArea = async () => {
   const installments = await getInstallments({})
 
-  return (
-    <div>
-      <ExpenseTable installments={installments.content} />
-    </div>
-  )
+  return <ExpenseTable installments={installments.content} />
 }
