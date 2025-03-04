@@ -6,6 +6,7 @@ import { useInstallmentTable } from "@/hooks/expenses/use-installment-table"
 import type { Installment } from "@/types/expenses"
 
 import { InstallmentColumns } from "./columns"
+import { ExpenseFilters } from "./filters"
 
 interface ExpenseTableProps {
   installments: Installment[]
@@ -16,7 +17,8 @@ export const ExpenseTable = ({ installments }: ExpenseTableProps) => {
 
   return (
     <div className="flex flex-col space-y-6">
-      <div>
+      <div className="flex items-center justify-between">
+        <ExpenseFilters />
         <ViewTableColumns table={table} />
       </div>
       <DataTable table={table} columns={InstallmentColumns} />
