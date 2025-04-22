@@ -1,8 +1,13 @@
+import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 
 import { LoginForm, LoginWithGoogle } from "@/components/auth"
 import { FRONTEND_ROUTES } from "@/constants"
+
+export const metadata: Metadata = {
+  title: FRONTEND_ROUTES.HOME.title,
+}
 
 const Home = () => {
   return (

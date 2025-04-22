@@ -1,4 +1,11 @@
+import type { Metadata } from "next"
+
 import { CreateExpense, InstallmentArea } from "@/components/expenses"
+import { FRONTEND_ROUTES } from "@/constants"
+
+export const metadata: Metadata = {
+  title: FRONTEND_ROUTES.EXPENSES.title,
+}
 
 interface ExpensePageProps {
   searchParams?: Promise<{
